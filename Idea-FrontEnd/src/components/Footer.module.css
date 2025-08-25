@@ -1,0 +1,128 @@
+/* Footer Component CSS Module */
+
+.footer {
+  background: var(--color-gray-900);
+  border-top: 1px solid var(--color-gray-800);
+  margin-top: auto;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--spacing-12) var(--spacing-4);
+}
+
+.content {
+  display: grid;
+  gap: var(--spacing-8);
+  grid-template-columns: 1fr;
+}
+
+.brandSection {
+  max-width: 20rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+}
+
+.logoIcon {
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(135deg, var(--color-purple-500), var(--color-blue-500));
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandName {
+  color: var(--color-white);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.brandDescription {
+  color: var(--color-gray-400);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.linkSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  color: var(--color-white);
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-bottom: var(--spacing-4);
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.link {
+  color: var(--color-gray-400);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  transition: color 200ms;
+}
+
+.link:hover {
+  color: var(--color-white);
+}
+
+.socialLinks {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.socialLink {
+  color: var(--color-gray-400);
+  text-decoration: none;
+  padding: var(--spacing-2);
+  border-radius: 0.5rem;
+  transition: all 200ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socialLink:hover {
+  color: var(--color-white);
+  background: var(--color-gray-800);
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+  .container {
+    padding: var(--spacing-12) var(--spacing-6);
+  }
+  
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .content {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: var(--spacing-12) var(--spacing-8);
+  }
+}

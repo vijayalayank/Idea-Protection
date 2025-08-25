@@ -1,0 +1,197 @@
+/* Home Page CSS Module */
+
+.container {
+  min-height: 100vh;
+}
+
+.heroSection {
+  padding-top: var(--spacing-20);
+  padding-bottom: var(--spacing-32);
+  padding-left: var(--spacing-4);
+  padding-right: var(--spacing-4);
+}
+
+.heroContent {
+  max-width: 80rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: var(--text-5xl);
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-8);
+}
+
+.gradientText {
+  background: linear-gradient(135deg, var(--color-purple-400), var(--color-blue-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroDescription {
+  font-size: var(--text-xl);
+  color: var(--color-gray-300);
+  margin-bottom: var(--spacing-12);
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.625;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  justify-content: center;
+  align-items: center;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, var(--color-purple-600), var(--color-blue-600));
+  color: var(--color-white);
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: 0.5rem;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 200ms;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.btnPrimary:hover {
+  background: linear-gradient(135deg, var(--color-purple-700), var(--color-blue-700));
+  transform: scale(1.05);
+}
+
+.btnSecondary {
+  border: 1px solid var(--color-gray-600);
+  color: var(--color-white);
+  background: transparent;
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: 0.5rem;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.btnSecondary:hover {
+  border-color: var(--color-gray-500);
+  background: var(--color-gray-800);
+}
+
+.featuresSection {
+  padding-top: var(--spacing-20);
+  padding-bottom: var(--spacing-20);
+  padding-left: var(--spacing-4);
+  padding-right: var(--spacing-4);
+}
+
+.featuresContainer {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.featuresGrid {
+  display: grid;
+  gap: var(--spacing-8);
+}
+
+.featureCard {
+  text-align: center;
+  padding: var(--spacing-8);
+  border-radius: 1rem;
+  background: rgba(31, 41, 55, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--color-gray-700);
+}
+
+.featureIcon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-6);
+}
+
+.featureIconPurple {
+  background: linear-gradient(135deg, var(--color-purple-500), var(--color-purple-600));
+}
+
+.featureIconBlue {
+  background: linear-gradient(135deg, var(--color-blue-500), var(--color-blue-600));
+}
+
+.featureIconGreen {
+  background: linear-gradient(135deg, var(--color-green-500), var(--color-green-600));
+}
+
+.featureTitle {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-4);
+}
+
+.featureDescription {
+  color: var(--color-gray-300);
+  line-height: 1.625;
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+  .heroSection {
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+  }
+  
+  .buttonContainer {
+    flex-direction: row;
+  }
+  
+  .featuresSection {
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: var(--text-7xl);
+  }
+  
+  .heroDescription {
+    font-size: var(--text-2xl);
+  }
+  
+  .featuresGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroSection {
+    padding-left: var(--spacing-8);
+    padding-right: var(--spacing-8);
+  }
+  
+  .featuresSection {
+    padding-left: var(--spacing-8);
+    padding-right: var(--spacing-8);
+  }
+}
