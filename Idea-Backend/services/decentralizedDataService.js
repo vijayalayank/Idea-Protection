@@ -1,5 +1,5 @@
-const blockchainService = require('./mockBlockchainService');
-const ipfsService = require('./mockIpfsService');
+const blockchainService = require('./blockchainService');
+const ipfsService = require('./ipfsService');
 
 class DecentralizedDataService {
   constructor() {
@@ -39,7 +39,7 @@ class DecentralizedDataService {
             }
           }
         );
-        
+
         uploadedFiles.push({
           filename: file.originalname,
           ipfsHash: fileUpload.hash,
@@ -68,7 +68,7 @@ class DecentralizedDataService {
       const metadataUpload = await ipfsService.uploadCompleteIdeaData(completeIdeaData);
 
       let accessHash = '';
-      
+
       // 4. For private ideas, create encrypted access data
       if (isPrivate && password) {
         const privateAccessData = {
@@ -140,7 +140,7 @@ class DecentralizedDataService {
             if (!metadata) {
               // Fetch from IPFS
               metadata = await ipfsService.getContent(idea.metadataHash);
-              
+
               // Cache the metadata
               this.cache.set(cacheKey, {
                 data: metadata,
@@ -217,10 +217,10 @@ class DecentralizedDataService {
             // Get encrypted access data
             const encryptedData = await ipfsService.getContent(blockchainIdea.accessHash);
             const decryptedAccess = ipfsService.decryptData(encryptedData.encryptedMetadata, password);
-            
+
             // Get full metadata using decrypted hash
             const metadata = await ipfsService.getContent(decryptedAccess.metadataHash);
-            
+
             return {
               id: blockchainIdea.id,
               owner: blockchainIdea.owner,
@@ -239,7 +239,7 @@ class DecentralizedDataService {
       // 3. For public ideas, get metadata directly
       if (blockchainIdea.metadataHash) {
         const metadata = await ipfsService.getContent(blockchainIdea.metadataHash);
-        
+
         return {
           id: blockchainIdea.id,
           owner: blockchainIdea.owner,
@@ -267,7 +267,7 @@ class DecentralizedDataService {
       // This is not efficient for large datasets, but maintains decentralization
 
       const allIdeas = await this.getPublicIdeas(0, 100); // Get more for search
-      
+
       const filteredIdeas = allIdeas.filter(idea => {
         // Text search
         if (query) {

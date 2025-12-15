@@ -42,19 +42,19 @@ const Register = () => {
     }
 
     const content = `${formData.title}${formData.description}${Date.now()}`;
-    console.log("Content : ",content);
+    console.log("Content : ", content);
     const encoder = new TextEncoder();
-    console.log("Encoder : ",encoder);
+    console.log("Encoder : ", encoder);
     const data = encoder.encode(content);
-    console.log("Data : ",data);
+    console.log("Data : ", data);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    console.log("Hash Buffer : ",hashBuffer);
+    console.log("Hash Buffer : ", hashBuffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    console.log("Hash Array : ",hashArray);
+    console.log("Hash Array : ", hashArray);
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    console.log("Hash : ",hashHex);
+    console.log("Hash : ", hashHex);
     setHash(`0x${hashHex}`);
-    
+
   };
 
   const handleSubmit = async (e) => {
@@ -77,7 +77,7 @@ const Register = () => {
       alert('Password is required for private ideas.');
       return;
     }
-    console.log('Form Data : ',formData);
+    console.log('Form Data : ', formData);
     setIsSubmitting(true);
 
     try {
@@ -98,7 +98,7 @@ const Register = () => {
       const result = await ideaRegistrationService.registerIdea(ideaData, formData.files);
 
       setRegistrationResult(true);
-      console.log('Result : ',result);
+      console.log('Result : ', result);
 
       const visibilityMessage = formData.visibility === 'private'
         ? 'Your private idea has been registered and is password protected!'
@@ -214,190 +214,190 @@ const Register = () => {
         {account && (
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} className={styles.form}>
-            {/* Title */}
-            <div className={styles.formGroup}>
-              <label htmlFor="title" className={styles.formLabel}>
-                Idea Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                required
-                className={styles.formInput}
-                placeholder="Enter a descriptive title for your idea"
-              />
-            </div>
-
-            {/* Description */}
-            <div className={styles.formGroup}>
-              <label htmlFor="description" className={styles.formLabel}>
-                Description *
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                required
-                className={styles.formTextarea}
-                placeholder="Provide a detailed description of your idea..."
-              />
-            </div>
-
-            {/* Visibility Options */}
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
-                Visibility Options *
-              </label>
-              <div className={styles.radioGroup}>
-                <div className={styles.radioOption}>
-                  <input
-                    type="radio"
-                    id="public"
-                    name="visibility"
-                    value="public"
-                    checked={formData.visibility === 'public'}
-                    onChange={handleInputChange}
-                    className={styles.radioInput}
-                  />
-                  <label htmlFor="public" className={styles.radioLabel}>
-                    <span className={styles.radioButton}></span>
-                    <div className={styles.radioContent}>
-                      <span className={styles.radioTitle}>Open to everyone</span>
-                      <span className={styles.radioDescription}>
-                        Your idea will be visible in the public registry
-                      </span>
-                    </div>
-                  </label>
-                </div>
-
-                <div className={styles.radioOption}>
-                  <input
-                    type="radio"
-                    id="private"
-                    name="visibility"
-                    value="private"
-                    checked={formData.visibility === 'private'}
-                    onChange={handleInputChange}
-                    className={styles.radioInput}
-                  />
-                  <label htmlFor="private" className={styles.radioLabel}>
-                    <span className={styles.radioButton}></span>
-                    <div className={styles.radioContent}>
-                      <span className={styles.radioTitle}>Only I can visit my idea</span>
-                      <span className={styles.radioDescription}>
-                        Your idea will be private and password protected
-                      </span>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Password Field - Only show if private visibility is selected */}
-            {formData.visibility === 'private' && (
+              {/* Title */}
               <div className={styles.formGroup}>
-                <label htmlFor="password" className={styles.formLabel}>
-                  Password Protection *
+                <label htmlFor="title" className={styles.formLabel}>
+                  Idea Title *
                 </label>
                 <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
                   onChange={handleInputChange}
-                  placeholder="Enter a secure password to protect your idea"
-                  className={styles.formInput}
                   required
+                  className={styles.formInput}
+                  placeholder="Enter a descriptive title for your idea"
                 />
-                <p className={styles.fieldHint}>
-                  This password will be required to view your idea. Make sure to remember it!
-                </p>
               </div>
-            )}
 
-            {/* File Upload */}
-            <div className={styles.formGroup}>
-              <label htmlFor="file" className={styles.formLabel}>
-                Supporting Documents (Optional)
-              </label>
-              <div className={styles.fileUpload}>
-                <Upload style={{margin: '0 auto', color: 'var(--color-gray-400)', marginBottom: '1rem'}} size={48} />
-                <input
-                  type="file"
-                  id="file"
-                  onChange={handleFileChange}
-                  className={styles.fileUploadInput}
-                  accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
-                />
-                <label htmlFor="file" className={styles.fileUploadLabel}>
-                  <span className={styles.fileUploadText}>Click to upload</span>
-                  <span className={styles.fileUploadSubtext}> or drag and drop</span>
+              {/* Description */}
+              <div className={styles.formGroup}>
+                <label htmlFor="description" className={styles.formLabel}>
+                  Description *
                 </label>
-                <p className={styles.fileUploadInfo}>
-                  PDF, DOC, TXT, PNG, JPG up to 10MB
-                </p>
-                {formData.files && formData.files.length > 0 && (
-                  <p className={styles.fileSelected}>
-                    Selected: {formData.files.length} file{formData.files.length > 1 ? 's' : ''}
-                  </p>
-                )}
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                  className={styles.formTextarea}
+                  placeholder="Provide a detailed description of your idea..."
+                />
               </div>
-            </div>
 
-            {/* Generate Hash Button */}
-            <div className={styles.buttonContainer}>
-              <button
-                type="button"
-                onClick={generateHash}
-                className={styles.btnPrimary}
-              >
-                <Hash size={20} />
-                <span>Generate Hash</span>
-              </button>
-            </div>
+              {/* Visibility Options */}
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>
+                  Visibility Options *
+                </label>
+                <div className={styles.radioGroup}>
+                  <div className={styles.radioOption}>
+                    <input
+                      type="radio"
+                      id="public"
+                      name="visibility"
+                      value="public"
+                      checked={formData.visibility === 'public'}
+                      onChange={handleInputChange}
+                      className={styles.radioInput}
+                    />
+                    <label htmlFor="public" className={styles.radioLabel}>
+                      <span className={styles.radioButton}></span>
+                      <div className={styles.radioContent}>
+                        <span className={styles.radioTitle}>Open to everyone</span>
+                        <span className={styles.radioDescription}>
+                          Your idea will be visible in the public registry
+                        </span>
+                      </div>
+                    </label>
+                  </div>
 
-            {/* Registration Result Display */}
-            {registrationResult && (
-              <div className={styles.resultDisplay}>
-                <h3 className={styles.resultTitle}>✅ Registration Successful!</h3>
-                <div className={styles.resultDetails}>
-                  <p><strong>Idea ID:</strong> {registrationResult.ideaId}</p>
-                  <p><strong>Transaction:</strong>
-                    <a href={registrationResult.explorerUrl} target="_blank" rel="noopener noreferrer">
-                      {registrationResult.transactionHash.substring(0, 10)}...
-                    </a>
-                  </p>
-                  <p><strong>IPFS Hash:</strong> {hash.substring(0, 10)}...</p>
+                  <div className={styles.radioOption}>
+                    <input
+                      type="radio"
+                      id="private"
+                      name="visibility"
+                      value="private"
+                      checked={formData.visibility === 'private'}
+                      onChange={handleInputChange}
+                      className={styles.radioInput}
+                    />
+                    <label htmlFor="private" className={styles.radioLabel}>
+                      <span className={styles.radioButton}></span>
+                      <div className={styles.radioContent}>
+                        <span className={styles.radioTitle}>Only I can visit my idea</span>
+                        <span className={styles.radioDescription}>
+                          Your idea will be private and password protected
+                        </span>
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* Submit Button */}
-            <div className={styles.submitContainer}>
-              <button
-                type="submit"
+              {/* Password Field - Only show if private visibility is selected */}
+              {formData.visibility === 'private' && (
+                <div className={styles.formGroup}>
+                  <label htmlFor="password" className={styles.formLabel}>
+                    Password Protection *
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Enter a secure password to protect your idea"
+                    className={styles.formInput}
+                    required
+                  />
+                  <p className={styles.fieldHint}>
+                    This password will be required to view your idea. Make sure to remember it!
+                  </p>
+                </div>
+              )}
+
+              {/* File Upload */}
+              <div className={styles.formGroup}>
+                <label htmlFor="file" className={styles.formLabel}>
+                  Supporting Documents (Optional)
+                </label>
+                <div className={styles.fileUpload}>
+                  <Upload style={{ margin: '0 auto', color: 'var(--color-gray-400)', marginBottom: '1rem' }} size={48} />
+                  <input
+                    type="file"
+                    id="file"
+                    onChange={handleFileChange}
+                    className={styles.fileUploadInput}
+                    accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
+                  />
+                  <label htmlFor="file" className={styles.fileUploadLabel}>
+                    <span className={styles.fileUploadText}>Click to upload</span>
+                    <span className={styles.fileUploadSubtext}> or drag and drop</span>
+                  </label>
+                  <p className={styles.fileUploadInfo}>
+                    PDF, DOC, TXT, PNG, JPG up to 10MB
+                  </p>
+                  {formData.files && formData.files.length > 0 && (
+                    <p className={styles.fileSelected}>
+                      Selected: {formData.files.length} file{formData.files.length > 1 ? 's' : ''}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Generate Hash Button */}
+              <div className={styles.buttonContainer}>
+                <button
+                  type="button"
+                  onClick={generateHash}
+                  className={styles.btnPrimary}
+                >
+                  <Hash size={20} />
+                  <span>Generate Hash</span>
+                </button>
+              </div>
+
+              {/* Registration Result Display */}
+              {registrationResult && (
+                <div className={styles.resultDisplay}>
+                  <h3 className={styles.resultTitle}>✅ Registration Successful!</h3>
+                  <div className={styles.resultDetails}>
+                    <p><strong>Idea ID:</strong> {registrationResult.ideaId}</p>
+                    <p><strong>Transaction:</strong>
+                      <a href={registrationResult.explorerUrl} target="_blank" rel="noopener noreferrer">
+                        {registrationResult.transactionHash.substring(0, 10)}...
+                      </a>
+                    </p>
+                    <p><strong>IPFS Hash:</strong> {hash.substring(0, 10)}...</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <div className={styles.submitContainer}>
+                <button
+                  type="submit"
                 // disabled={isSubmitting || !account || !servicesReady}
                 // className={`${styles.btnSuccess} ${(isSubmitting || !account || !servicesReady) ? styles.btnDisabled : ''}`}
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className={styles.spinner}></div>
-                    <span>Registering...</span>
-                  </>
-                ) : (
-                  <>
-                    {/* <Shield size={20} /> */}
-                    <span>Register on Blockchain</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className={styles.spinner}></div>
+                      <span>Registering...</span>
+                    </>
+                  ) : (
+                    <>
+                      {/* <Shield size={20} /> */}
+                      <span>Register on Blockchain</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         )}
       </div>
 
@@ -405,17 +405,17 @@ const Register = () => {
       <div className={styles.content}>
         <div className={styles.infoCards}>
           <div className={styles.infoCard}>
-            <Hash className={styles.infoCardIcon} style={{color: 'var(--color-purple-400)'}} size={32} />
+            <Hash className={styles.infoCardIcon} style={{ color: 'var(--color-purple-400)' }} size={32} />
             <h3 className={styles.infoCardTitle}>Cryptographic Hash</h3>
             <p className={styles.infoCardDescription}>Your idea is converted to a unique hash</p>
           </div>
           <div className={styles.infoCard}>
-            <Clock className={styles.infoCardIcon} style={{color: 'var(--color-blue-400)'}} size={32} />
+            <Clock className={styles.infoCardIcon} style={{ color: 'var(--color-blue-400)' }} size={32} />
             <h3 className={styles.infoCardTitle}>Blockchain Timestamp</h3>
             <p className={styles.infoCardDescription}>Immutable proof of when you registered</p>
           </div>
           <div className={styles.infoCard}>
-            <Shield className={styles.infoCardIcon} style={{color: 'var(--color-green-400)'}} size={32} />
+            <Shield className={styles.infoCardIcon} style={{ color: 'var(--color-green-400)' }} size={32} />
             <h3 className={styles.infoCardTitle}>Privacy Protected</h3>
             <p className={styles.infoCardDescription}>Your content remains completely private</p>
           </div>

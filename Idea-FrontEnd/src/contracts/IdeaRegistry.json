@@ -2,282 +2,245 @@
   "contractName": "IdeaRegistry",
   "abi": [
     {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_metadataHash",
-          "type": "string"
-        },
-        {
-          "internalType": "bool",
-          "name": "_isPrivate",
-          "type": "bool"
-        },
-        {
-          "internalType": "string",
-          "name": "_accessHash",
-          "type": "string"
-        }
-      ],
-      "name": "registerIdea",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_offset",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_limit",
-          "type": "uint256"
-        }
-      ],
-      "name": "getPublicIdeas",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "metadataHash",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "timestamp",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bool",
-              "name": "isPrivate",
-              "type": "bool"
-            },
-            {
-              "internalType": "string",
-              "name": "accessHash",
-              "type": "string"
-            },
-            {
-              "internalType": "bool",
-              "name": "exists",
-              "type": "bool"
-            }
-          ],
-          "internalType": "struct IdeaRegistry.Idea[]",
-          "name": "",
-          "type": "tuple[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_ideaId",
-          "type": "uint256"
-        }
-      ],
-      "name": "getIdeaDetails",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "metadataHash",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "timestamp",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bool",
-              "name": "isPrivate",
-              "type": "bool"
-            },
-            {
-              "internalType": "string",
-              "name": "accessHash",
-              "type": "string"
-            },
-            {
-              "internalType": "bool",
-              "name": "exists",
-              "type": "bool"
-            }
-          ],
-          "internalType": "struct IdeaRegistry.Idea",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getMyIdeas",
-      "outputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "",
-          "type": "uint256[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_ideaId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_owner",
-          "type": "address"
-        }
-      ],
-      "name": "verifyIdeaOwnership",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getTotalPublicIdeas",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "totalIdeas",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "totalPublicIdeas",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "version",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
+      "type": "event",
       "anonymous": false,
+      "name": "IdeaAccessed",
       "inputs": [
         {
-          "indexed": true,
-          "internalType": "uint256",
+          "type": "uint256",
           "name": "ideaId",
-          "type": "uint256"
+          "indexed": true
         },
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
+          "type": "address",
+          "name": "accessor",
+          "indexed": true
         },
         {
-          "indexed": false,
-          "internalType": "string",
-          "name": "metadataHash",
-          "type": "string"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "isPrivate",
-          "type": "bool"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
+          "type": "uint256",
           "name": "timestamp",
-          "type": "uint256"
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "IdeaRegistered",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "ideaId",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "owner",
+          "indexed": true
+        },
+        {
+          "type": "string",
+          "name": "metadataHash",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "timestamp",
+          "indexed": false
+        },
+        {
+          "type": "bool",
+          "name": "isPrivate",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getIdeaDetails",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_ideaId"
         }
       ],
-      "name": "IdeaRegistered",
-      "type": "event"
+      "outputs": [
+        {
+          "type": "tuple",
+          "name": "",
+          "components": [
+            {
+              "type": "uint256",
+              "name": "id"
+            },
+            {
+              "type": "address",
+              "name": "owner"
+            },
+            {
+              "type": "string",
+              "name": "metadataHash"
+            },
+            {
+              "type": "uint256",
+              "name": "timestamp"
+            },
+            {
+              "type": "bool",
+              "name": "isPrivate"
+            },
+            {
+              "type": "string",
+              "name": "accessHash"
+            },
+            {
+              "type": "bool",
+              "name": "exists"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getMyIdeas",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256[]",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getPublicIdeas",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_offset"
+        },
+        {
+          "type": "uint256",
+          "name": "_limit"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "tuple[]",
+          "name": "",
+          "components": [
+            {
+              "type": "uint256",
+              "name": "id"
+            },
+            {
+              "type": "address",
+              "name": "owner"
+            },
+            {
+              "type": "string",
+              "name": "metadataHash"
+            },
+            {
+              "type": "uint256",
+              "name": "timestamp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getTotalPublicIdeas",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "registerIdea",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "string",
+          "name": "_metadataHash"
+        },
+        {
+          "type": "bool",
+          "name": "_isPrivate"
+        },
+        {
+          "type": "string",
+          "name": "_accessHash"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "totalIdeas",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "verifyIdeaOwnership",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_ideaId"
+        },
+        {
+          "type": "address",
+          "name": "_owner"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
     }
   ],
   "networks": {
-    "80001": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    "80002": {
+      "address": "0x2544CFa89863c401eDC87B52938064196F17D529",
+      "transactionHash": "0xe3dd74bdeb95811169154692924fd536c7fc4ec567c0385aad137623af59c0c2"
     }
   }
 }

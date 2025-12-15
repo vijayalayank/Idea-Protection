@@ -1,4 +1,4 @@
-const { PinataSDK } = require('@pinata/sdk');
+const PinataSDK = require('@pinata/sdk');
 const crypto = require('crypto');
 
 class IPFSService {
@@ -10,9 +10,10 @@ class IPFSService {
 
   async initialize() {
     try {
-      if (process.env.PINATA_JWT) {
+      if (process.env.PINATA_API_KEY && process.env.PINATA_SECRET_API_KEY) {
         this.pinata = new PinataSDK({
-          pinataJwt: process.env.PINATA_JWT
+          pinataApiKey: process.env.PINATA_API_KEY,
+          pinataSecretApiKey: process.env.PINATA_SECRET_API_KEY
         });
 
         // Test connection
@@ -55,7 +56,7 @@ class IPFSService {
       };
 
       const result = await this.pinata.pinJSONToIPFS(data, options);
-      
+
       return {
         hash: result.IpfsHash,
         size: result.PinSize,
@@ -91,7 +92,7 @@ class IPFSService {
       };
 
       const result = await this.pinata.pinFileToIPFS(fileBuffer, options);
-      
+
       return {
         hash: result.IpfsHash,
         size: result.PinSize,
@@ -110,13 +111,13 @@ class IPFSService {
     try {
       const url = `https://gateway.pinata.cloud/ipfs/${hash}`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const contentType = response.headers.get('content-type');
-      
+
       if (contentType && contentType.includes('application/json')) {
         return await response.json();
       } else {

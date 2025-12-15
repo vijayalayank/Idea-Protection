@@ -16,16 +16,9 @@ async function main() {
   // Deploy the contract
   console.log("📄 Deploying IdeaRegistry contract...");
   const IdeaRegistry = await ethers.getContractFactory("IdeaRegistry");
-  
-  // Estimate gas
-  const deploymentData = IdeaRegistry.interface.encodeDeploy([]);
-  const estimatedGas = await deployer.estimateGas({ data: deploymentData });
-  console.log("⛽ Estimated gas for deployment:", estimatedGas.toString());
 
-  // Deploy with gas limit
-  const ideaRegistry = await IdeaRegistry.deploy({
-    gasLimit: estimatedGas * 120n / 100n // Add 20% buffer
-  });
+  // Deploy with auto gas limit
+  const ideaRegistry = await IdeaRegistry.deploy();
 
   console.log("⏳ Waiting for deployment transaction...");
   await ideaRegistry.waitForDeployment();
@@ -106,11 +99,11 @@ async function main() {
   // Network-specific instructions
   const network = hre.network.name;
   console.log("\n🎉 Deployment completed successfully!");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
   console.log(`📍 Network: ${network}`);
   console.log(`📄 Contract: ${contractAddress}`);
   console.log(`🔗 Transaction: ${deploymentTx.hash}`);
-  
+
   if (network === "mumbai") {
     console.log(`🔍 Verify on PolygonScan: https://mumbai.polygonscan.com/address/${contractAddress}`);
     console.log(`💰 Get test MATIC: https://faucet.polygon.technology/`);
@@ -125,7 +118,7 @@ async function main() {
   console.log("1. Update your .env file with the contract address");
   console.log("2. Configure your backend with the new contract");
   console.log("3. Test the frontend integration");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 }
 
 main()

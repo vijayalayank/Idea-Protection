@@ -14,12 +14,12 @@ class BlockchainService {
       // Connect to blockchain network
       const rpcUrl = process.env.RPC_URL || 'https://polygon-mumbai.g.alchemy.com/v2/your-api-key';
       this.provider = new ethers.JsonRpcProvider(rpcUrl);
-      
+
       // Setup signer (for contract interactions)
       if (process.env.PRIVATE_KEY) {
         this.signer = new ethers.Wallet(process.env.PRIVATE_KEY, this.provider);
       }
-      
+
       // Initialize contract
       const contractAddress = process.env.CONTRACT_ADDRESS;
       if (contractAddress && contractABI.abi) {
@@ -29,15 +29,15 @@ class BlockchainService {
           this.signer || this.provider
         );
       }
-      
+
       // Test connection
       await this.provider.getNetwork();
       this.connected = true;
-      
+
       console.log('✅ Blockchain service initialized');
       console.log(`📡 Network: ${(await this.provider.getNetwork()).name}`);
       console.log(`📄 Contract: ${contractAddress}`);
-      
+
     } catch (error) {
       console.error('❌ Blockchain initialization failed:', error.message);
       this.connected = false;
@@ -85,10 +85,10 @@ class BlockchainService {
       );
 
       console.log(`📝 Idea registration transaction: ${tx.hash}`);
-      
+
       // Wait for confirmation
       const receipt = await tx.wait();
-      
+
       // Extract idea ID from event logs
       const event = receipt.logs.find(log => {
         try {
@@ -127,7 +127,7 @@ class BlockchainService {
 
     try {
       const ideas = await this.contract.getPublicIdeas(offset, limit);
-      
+
       return ideas.map(idea => ({
         id: idea.id.toString(),
         owner: idea.owner,
@@ -165,7 +165,7 @@ class BlockchainService {
 
     try {
       const idea = await this.contract.getIdeaDetails(ideaId, password);
-      
+
       return {
         id: idea.id.toString(),
         owner: idea.owner,
@@ -212,7 +212,7 @@ class BlockchainService {
   // Utility methods
   async getGasPrice() {
     if (!this.provider) return null;
-    
+
     try {
       const gasPrice = await this.provider.getFeeData();
       return {
@@ -228,11 +228,11 @@ class BlockchainService {
 
   async getNetworkInfo() {
     if (!this.provider) return null;
-    
+
     try {
       const network = await this.provider.getNetwork();
       const blockNumber = await this.provider.getBlockNumber();
-      
+
       return {
         chainId: network.chainId.toString(),
         name: network.name,

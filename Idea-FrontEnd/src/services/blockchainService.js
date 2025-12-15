@@ -134,7 +134,7 @@ class BlockchainService {
 
     } catch (error) {
       console.error('❌ Blockchain registration failed:', error);
-      
+
       // Handle specific error types
       if (error.code === 'ACTION_REJECTED') {
         throw new Error('Transaction was rejected by user');
@@ -157,9 +157,9 @@ class BlockchainService {
 
     try {
       console.log(`📖 Fetching public ideas (${offset}-${offset + limit})...`);
-      
+
       const ideas = await this.contract.getPublicIdeas(offset, limit);
-      
+
       return ideas.map(idea => ({
         id: idea.id.toString(),
         owner: idea.owner,
@@ -182,9 +182,9 @@ class BlockchainService {
 
     try {
       console.log(`📖 Fetching idea details for ID: ${ideaId}`);
-      
+
       const idea = await this.contract.getIdeaDetails(ideaId);
-      
+
       return {
         id: idea.id.toString(),
         owner: idea.owner,
@@ -209,10 +209,10 @@ class BlockchainService {
 
     try {
       console.log(`📖 Fetching ideas for user: ${userAddress}`);
-      
+
       // This requires the user to be connected with their wallet
       const ideaIds = await this.contract.getMyIdeas();
-      
+
       return ideaIds.map(id => id.toString());
 
     } catch (error) {
@@ -279,7 +279,7 @@ class BlockchainService {
     try {
       const network = await this.provider.getNetwork();
       const blockNumber = await this.provider.getBlockNumber();
-      
+
       return {
         chainId: network.chainId.toString(),
         name: network.name,

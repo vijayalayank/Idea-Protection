@@ -161,38 +161,38 @@ const Registry = () => {
         {!loading && !error && (
           <div className={styles.entriesContainer}>
             {filteredEntries.map((entry) => (
-            <div key={entry.id} className={styles.registryEntry}>
-              <div className={styles.entryContent}>
-                <div className={styles.entryMain}>
-                  <div className={styles.entryHeader}>
-                    <h3 className={styles.entryTitle}>{entry.title}</h3>
-                    <CheckCircle style={{color: 'var(--color-green-400)'}} size={24} />
+              <div key={entry.id} className={styles.registryEntry}>
+                <div className={styles.entryContent}>
+                  <div className={styles.entryMain}>
+                    <div className={styles.entryHeader}>
+                      <h3 className={styles.entryTitle}>{entry.title}</h3>
+                      <CheckCircle style={{ color: 'var(--color-green-400)' }} size={24} />
+                    </div>
+
+                    <div className={styles.entryDetails}>
+                      <div className={styles.entryDetail}>
+                        <Hash size={16} />
+                        <span className={styles.monoFont}>{truncateHash(entry.transactionHash || entry.hash)}</span>
+                      </div>
+                      <div className={styles.entryDetail}>
+                        <Calendar size={16} />
+                        <span>{formatDate(entry.timestamp)}</span>
+                      </div>
+                      <div className={styles.entryDetail}>
+                        <User size={16} />
+                        <span className={styles.monoFont}>{truncateAddress(entry.owner)}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className={styles.entryDetails}>
-                    <div className={styles.entryDetail}>
-                      <Hash size={16} />
-                      <span className={styles.monoFont}>{truncateHash(entry.transactionHash || entry.hash)}</span>
-                    </div>
-                    <div className={styles.entryDetail}>
-                      <Calendar size={16} />
-                      <span>{formatDate(entry.timestamp)}</span>
-                    </div>
-                    <div className={styles.entryDetail}>
-                      <User size={16} />
-                      <span className={styles.monoFont}>{truncateAddress(entry.owner)}</span>
-                    </div>
+                  <div className={styles.entryActions}>
+                    <button className={styles.btnPrimary}>
+                      View Details
+                    </button>
                   </div>
-                </div>
-
-                <div className={styles.entryActions}>
-                  <button className={styles.btnPrimary}>
-                    View Details
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
         )}
 

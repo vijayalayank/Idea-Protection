@@ -47,11 +47,11 @@ class IdeaRegistrationService {
       const uploadedFiles = [];
       if (files && files.length > 0) {
         console.log('📤 Uploading supporting files...');
-        
+
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           console.log(`📁 Uploading file ${i + 1}/${files.length}: ${file.name}`);
-          
+
           const fileUpload = await ipfsService.uploadFile(file, {
             name: `${ideaData.title}-${file.name}`,
             keyvalues: {
@@ -69,7 +69,7 @@ class IdeaRegistrationService {
             url: fileUpload.url
           });
         }
-        
+
         console.log(`✅ ${uploadedFiles.length} files uploaded to IPFS`);
       }
 
@@ -95,7 +95,7 @@ class IdeaRegistrationService {
       // Step 4: Handle private ideas
       if (ideaData.isPrivate && ideaData.password) {
         console.log('🔒 Creating private access data...');
-        
+
         const privateAccessData = {
           metadataHash: metadataUpload.hash,
           title: ideaData.title,
@@ -105,10 +105,10 @@ class IdeaRegistrationService {
         };
 
         const accessUpload = await ipfsService.uploadPrivateAccessData(
-          privateAccessData, 
+          privateAccessData,
           ideaData.password
         );
-        
+
         accessHash = accessUpload.hash;
         console.log('✅ Private access data created:', accessHash);
       }
@@ -130,17 +130,17 @@ class IdeaRegistrationService {
         transactionHash: blockchainResult.transactionHash,
         blockNumber: blockchainResult.blockNumber,
         gasUsed: blockchainResult.gasUsed,
-        
+
         // IPFS data
         metadataHash: metadataUpload.hash,
         metadataUrl: metadataUpload.url,
         accessHash,
         supportingFiles: uploadedFiles,
-        
+
         // URLs
         explorerUrl: this.getExplorerUrl(blockchainResult.transactionHash),
         ipfsUrl: metadataUpload.url,
-        
+
         // Timestamps
         timestamp: blockchainResult.timestamp
       };
@@ -172,17 +172,17 @@ class IdeaRegistrationService {
         blockchainIdeas.map(async (idea) => {
           try {
             console.log(`📥 Fetching metadata for idea ${idea.id}...`);
-            
+
             // Get metadata from IPFS
             const metadata = await ipfsService.getContent(idea.metadataHash);
-            
+
             return {
               // Blockchain data
               id: idea.id,
               owner: idea.owner,
               timestamp: idea.timestamp,
               metadataHash: idea.metadataHash,
-              
+
               // IPFS metadata
               title: metadata.title,
               description: metadata.description,
@@ -191,7 +191,7 @@ class IdeaRegistrationService {
               supportingFiles: metadata.supportingFiles || [],
               contentHash: metadata.contentHash,
               createdAt: metadata.timestamp,
-              
+
               // URLs
               explorerUrl: this.getExplorerUrl(idea.transactionHash),
               ipfsUrl: `${ipfsService.gateway}${idea.metadataHash}`
@@ -199,7 +199,7 @@ class IdeaRegistrationService {
 
           } catch (error) {
             console.error(`❌ Failed to fetch metadata for idea ${idea.id}:`, error);
-            
+
             // Return basic info if IPFS fetch fails
             return {
               id: idea.id,
@@ -243,7 +243,7 @@ class IdeaRegistrationService {
       // Step 2: Handle private ideas
       if (blockchainIdea.isPrivate) {
         const currentUser = await blockchainService.getCurrentUser();
-        
+
         if (!password && blockchainIdea.owner.toLowerCase() !== currentUser?.toLowerCase()) {
           // Return limited info for private ideas
           return {
@@ -262,13 +262,13 @@ class IdeaRegistrationService {
             // Get encrypted access data
             const encryptedData = await ipfsService.getContent(blockchainIdea.accessHash);
             const decryptedAccess = await ipfsService.decryptData(
-              encryptedData.encryptedMetadata, 
+              encryptedData.encryptedMetadata,
               password
             );
-            
+
             // Get full metadata using decrypted hash
             const metadata = await ipfsService.getContent(decryptedAccess.metadataHash);
-            
+
             return {
               id: blockchainIdea.id,
               owner: blockchainIdea.owner,
@@ -288,7 +288,7 @@ class IdeaRegistrationService {
       // Step 3: For public ideas, get metadata directly
       if (blockchainIdea.metadataHash) {
         const metadata = await ipfsService.getContent(blockchainIdea.metadataHash);
-        
+
         return {
           id: blockchainIdea.id,
           owner: blockchainIdea.owner,
@@ -322,7 +322,7 @@ class IdeaRegistrationService {
       }
 
       const ideaIds = await blockchainService.getUserIdeas(currentUser);
-      
+
       // Get details for each idea
       const userIdeas = await Promise.all(
         ideaIds.map(id => this.getIdeaDetails(id))
@@ -399,7 +399,7 @@ class IdeaRegistrationService {
   // Helper method to get explorer URL
   getExplorerUrl(transactionHash) {
     const chainId = parseInt(import.meta.env.VITE_CHAIN_ID || '80001');
-    
+
     const explorers = {
       1: 'https://etherscan.io',
       137: 'https://polygonscan.com',

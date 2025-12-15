@@ -51,7 +51,7 @@ class IPFSService {
       }
 
       const result = await response.json();
-      
+
       console.log('✅ JSON uploaded to IPFS:', result.IpfsHash);
 
       return {
@@ -108,7 +108,7 @@ class IPFSService {
       }
 
       const result = await response.json();
-      
+
       console.log('✅ File uploaded to IPFS:', result.IpfsHash);
 
       return {
@@ -147,7 +147,7 @@ class IPFSService {
 
           if (response.ok) {
             const contentType = response.headers.get('content-type');
-            
+
             if (contentType && contentType.includes('application/json')) {
               const content = await response.json();
               console.log('✅ JSON content retrieved from IPFS');
@@ -175,29 +175,29 @@ class IPFSService {
   // Upload complete idea data
   async uploadCompleteIdeaData(ideaData) {
     const contentHash = this.generateContentHash(ideaData);
-    
+
     const completeIdeaData = {
       // Basic info
       title: ideaData.title,
       description: ideaData.description,
       category: ideaData.category || 'other',
       tags: ideaData.tags || [],
-      
+
       // Owner info
       owner: ideaData.owner,
       ownerAddress: ideaData.ownerAddress,
-      
+
       // Files
       supportingFiles: ideaData.supportingFiles || [],
-      
+
       // Metadata
       timestamp: new Date().toISOString(),
       contentHash,
       version: '2.0',
-      
+
       // Privacy
       isPrivate: ideaData.isPrivate || false,
-      
+
       // Proof of creation
       creationProof: {
         userAgent: navigator.userAgent,
@@ -224,7 +224,7 @@ class IPFSService {
   // Upload private access data (encrypted)
   async uploadPrivateAccessData(accessData, password) {
     const encryptedData = await this.encryptData(accessData, password);
-    
+
     const accessInfo = {
       encryptedMetadata: encryptedData,
       accessInstructions: "This idea is private. Provide the correct password to access.",
@@ -248,7 +248,7 @@ class IPFSService {
     try {
       const encoder = new TextEncoder();
       const dataBuffer = encoder.encode(JSON.stringify(data));
-      
+
       // Generate key from password
       const keyMaterial = await crypto.subtle.importKey(
         'raw',
@@ -297,7 +297,7 @@ class IPFSService {
     try {
       const encoder = new TextEncoder();
       const decoder = new TextDecoder();
-      
+
       // Recreate key from password
       const keyMaterial = await crypto.subtle.importKey(
         'raw',
@@ -321,9 +321,9 @@ class IPFSService {
       );
 
       const decrypted = await crypto.subtle.decrypt(
-        { 
-          name: 'AES-GCM', 
-          iv: new Uint8Array(encryptedData.iv) 
+        {
+          name: 'AES-GCM',
+          iv: new Uint8Array(encryptedData.iv)
         },
         key,
         new Uint8Array(encryptedData.encrypted)
@@ -342,7 +342,7 @@ class IPFSService {
   generateContentHash(content) {
     const encoder = new TextEncoder();
     const data = encoder.encode(JSON.stringify(content));
-    
+
     return crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
