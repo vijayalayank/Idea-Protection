@@ -34,7 +34,7 @@ const About = () => {
         <div className={styles.valuesGrid}>
           <div className={styles.valueCard}>
             <div className={`${styles.valueIcon} ${styles.valueIconPurple}`}>
-              <Shield style={{color: 'white'}} size={32} />
+              <Shield size={32} />
             </div>
             <h3 className={styles.valueTitle}>Security First</h3>
             <p className={styles.valueDescription}>
@@ -44,7 +44,7 @@ const About = () => {
 
           <div className={styles.valueCard}>
             <div className={`${styles.valueIcon} ${styles.valueIconBlue}`}>
-              <Users style={{color: 'white'}} size={32} />
+              <Users size={32} />
             </div>
             <h3 className={styles.valueTitle}>Community Driven</h3>
             <p className={styles.valueDescription}>
@@ -54,7 +54,7 @@ const About = () => {
 
           <div className={styles.valueCard}>
             <div className={`${styles.valueIcon} ${styles.valueIconGreen}`}>
-              <Globe style={{color: 'white'}} size={32} />
+              <Globe size={32} />
             </div>
             <h3 className={styles.valueTitle}>Global Access</h3>
             <p className={styles.valueDescription}>
@@ -64,7 +64,7 @@ const About = () => {
 
           <div className={styles.valueCard}>
             <div className={`${styles.valueIcon} ${styles.valueIconYellow}`}>
-              <Zap style={{color: 'white'}} size={32} />
+              <Zap size={32} />
             </div>
             <h3 className={styles.valueTitle}>Innovation</h3>
             <p className={styles.valueDescription}>
@@ -102,7 +102,7 @@ const About = () => {
         <div className={styles.ctaSection}>
           <h2 className={styles.ctaTitle}>Join the Revolution</h2>
           <p className={styles.ctaText}>
-            Ready to protect your intellectual property with the power of blockchain? 
+            Ready to protect your intellectual property with the power of blockchain?
             Join thousands of creators who trust MuseChain to secure their innovations.
           </p>
           <button className={styles.ctaButton}>

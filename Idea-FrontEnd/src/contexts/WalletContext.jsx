@@ -96,6 +96,17 @@ export const WalletProvider = ({ children }) => {
         setBalance(balance);
 
         // Initialize blockchain and IPFS services
+        // Force switch to Amoy if not already on it
+        if (chainId !== 80002) {
+          try {
+            await switchNetwork(80002);
+            setChainId(80002);
+          } catch (switchError) {
+            console.error("Failed to switch to Amoy network", switchError);
+            alert("Please switch to Polygon Amoy Testnet to use this app.");
+          }
+        }
+
         try {
           await ideaRegistrationService.initialize(window.ethereum);
           setServicesReady(true);
@@ -141,8 +152,35 @@ export const WalletProvider = ({ children }) => {
         params: [{ chainId: `0x${targetChainId.toString(16)}` }]
       });
     } catch (error) {
-      console.error('Error switching network:', error);
-      throw error;
+      // This error code indicates that the chain has not been added to MetaMask
+      if (error.code === 4902) {
+        try {
+          if (targetChainId === 80002) {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: '0x13882', // 80002 in hex
+                  chainName: 'Polygon Amoy Testnet',
+                  rpcUrls: ['https://rpc-amoy.polygon.technology/'],
+                  nativeCurrency: {
+                    name: 'MATIC',
+                    symbol: 'MATIC',
+                    decimals: 18
+                  },
+                  blockExplorerUrls: ['https://amoy.polygonscan.com/']
+                }
+              ]
+            });
+          }
+        } catch (addError) {
+          console.error('Error adding network:', addError);
+          throw addError;
+        }
+      } else {
+        console.error('Error switching network:', error);
+        throw error;
+      }
     }
   };
 
@@ -150,14 +188,10 @@ export const WalletProvider = ({ children }) => {
   const getNetworkName = (chainId) => {
     const networks = {
       1: 'Ethereum Mainnet',
-      3: 'Ropsten Testnet',
-      4: 'Rinkeby Testnet',
-      5: 'Goerli Testnet',
       11155111: 'Sepolia Testnet',
       137: 'Polygon Mainnet',
       80001: 'Polygon Mumbai Testnet',
-      56: 'BSC Mainnet',
-      97: 'BSC Testnet'
+      80002: 'Polygon Amoy Testnet', // Added Amoy
     };
     return networks[chainId] || `Chain ID: ${chainId}`;
   };
@@ -196,13 +230,41 @@ export const WalletProvider = ({ children }) => {
   // Check for existing connection on mount
   useEffect(() => {
     if (isMetaMaskInstalled()) {
-      getCurrentAccount().then((account) => {
-        if (account) {
-          setAccount(account);
-          getCurrentChainId().then(setChainId);
-          getBalance(account).then(setBalance);
+      const checkConnection = async () => {
+        try {
+          const account = await getCurrentAccount();
+          if (account) {
+            // Get chain ID BEFORE setting account to avoid "ETH" flicker
+            const currentChainId = await getCurrentChainId();
+            setChainId(currentChainId);
+            setAccount(account); // Now UI renders with correct chain ID established
+
+            getBalance(account).then(setBalance);
+
+            // Force switch on load if not Amoy
+            if (currentChainId !== 80002) {
+              try {
+                await switchNetwork(80002);
+                setChainId(80002);
+              } catch (error) {
+                console.error("Failed to switch network on load:", error);
+              }
+            }
+
+            // Initialize services
+            try {
+              await ideaRegistrationService.initialize(window.ethereum);
+              setServicesReady(true);
+            } catch (error) {
+              console.error('Service initialization failed:', error);
+            }
+          }
+        } catch (error) {
+          console.error("Error checking connection:", error);
         }
-      });
+      };
+
+      checkConnection();
     }
   }, []);
 

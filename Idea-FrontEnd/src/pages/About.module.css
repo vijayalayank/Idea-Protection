@@ -3,6 +3,7 @@
 .container {
   min-height: 100vh;
   padding-top: var(--spacing-20);
+  background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
 }
 
 .content {
@@ -21,13 +22,30 @@
   font-weight: 700;
   color: var(--color-white);
   margin-bottom: var(--spacing-6);
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
 .gradientText {
-  background: linear-gradient(135deg, var(--color-purple-400), var(--color-blue-400));
+  background: linear-gradient(135deg, var(--color-accent-400), var(--color-secondary-400), var(--color-primary-400));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradientForwards 5s linear infinite;
+}
+
+@keyframes gradientForwards {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .description {
@@ -35,18 +53,49 @@
   color: var(--color-gray-300);
   max-width: 48rem;
   margin: 0 auto;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.2s forwards;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .missionSection {
   margin-bottom: var(--spacing-20);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.4s forwards;
 }
 
 .missionCard {
-  background: rgba(31, 41, 55, 0.5);
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--color-gray-700);
-  border-radius: 1rem;
-  padding: var(--spacing-8);
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* glass-panel */
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-12);
+  position: relative;
+  overflow: hidden;
+}
+
+.missionCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500), var(--color-accent-500));
 }
 
 .missionTitle {
@@ -60,7 +109,7 @@
 .missionText {
   font-size: var(--text-lg);
   color: var(--color-gray-300);
-  line-height: 1.625;
+  line-height: 1.8;
   text-align: center;
   max-width: 64rem;
   margin: 0 auto;
@@ -70,36 +119,55 @@
   display: grid;
   gap: var(--spacing-8);
   margin-bottom: var(--spacing-20);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.5s forwards;
 }
 
 .valueCard {
   text-align: center;
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+  transition: all 300ms;
+}
+
+.valueCard:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: translateY(-5px);
 }
 
 .valueIcon {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto var(--spacing-4);
+  margin: 0 auto var(--spacing-6);
+  transition: transform 0.3s ease;
+}
+
+.valueCard:hover .valueIcon {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .valueIconPurple {
-  background: linear-gradient(135deg, var(--color-purple-500), var(--color-purple-600));
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--color-secondary-400);
 }
 
 .valueIconBlue {
-  background: linear-gradient(135deg, var(--color-blue-500), var(--color-blue-600));
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--color-primary-400);
 }
 
 .valueIconGreen {
-  background: linear-gradient(135deg, var(--color-green-500), var(--color-green-600));
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--color-success);
 }
 
 .valueIconYellow {
-  background: linear-gradient(135deg, #eab308, #f59e0b);
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--color-warning);
 }
 
 .valueTitle {
@@ -110,33 +178,49 @@
 }
 
 .valueDescription {
-  color: var(--color-gray-300);
+  color: var(--color-gray-400);
+  line-height: 1.6;
 }
 
 .techSection {
-  background: rgba(31, 41, 55, 0.5);
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--color-gray-700);
-  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-2xl);
   padding: var(--spacing-8);
   margin-bottom: var(--spacing-20);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.6s forwards;
 }
 
 .techTitle {
   font-size: var(--text-3xl);
   font-weight: 700;
   color: var(--color-white);
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-12);
   text-align: center;
 }
 
 .techGrid {
   display: grid;
-  gap: var(--spacing-8);
+  gap: var(--spacing-12);
 }
 
 .techItem {
   text-align: center;
+  position: relative;
+}
+
+.techItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -2rem;
+  top: 50%;
+  height: 50%;
+  width: 1px;
+  background: var(--color-gray-700);
+  transform: translateY(-50%);
+  display: none;
 }
 
 .techItemTitle {
@@ -144,51 +228,62 @@
   font-weight: 700;
   color: var(--color-white);
   margin-bottom: var(--spacing-4);
+  background: linear-gradient(90deg, var(--color-gray-100), var(--color-gray-400));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .techItemDescription {
-  color: var(--color-gray-300);
+  color: var(--color-gray-400);
+  line-height: 1.6;
 }
 
 .ctaSection {
   text-align: center;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.7s forwards;
+  padding: var(--spacing-12);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
 }
 
 .ctaTitle {
-  font-size: var(--text-3xl);
+  font-size: var(--text-4xl);
   font-weight: 700;
   color: var(--color-white);
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-6);
 }
 
 .ctaText {
   font-size: var(--text-lg);
   color: var(--color-gray-300);
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-10);
   max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
 }
 
 .ctaButton {
-  background: linear-gradient(135deg, var(--color-purple-600), var(--color-blue-600));
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-secondary-600));
   color: var(--color-white);
-  padding: var(--spacing-4) var(--spacing-8);
-  border-radius: 0.5rem;
+  padding: var(--spacing-4) var(--spacing-10);
+  border-radius: var(--radius-full);
   font-size: var(--text-lg);
   font-weight: 600;
   cursor: pointer;
   border: none;
-  transition: all 200ms;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.4);
 }
 
 .ctaButton:hover {
-  background: linear-gradient(135deg, var(--color-purple-700), var(--color-blue-700));
-  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.6);
 }
 
 /* Responsive Design */
@@ -203,13 +298,17 @@
   .title {
     font-size: var(--text-6xl);
   }
-  
+
   .valuesGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
+
   .techGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .techItem:not(:last-child)::after {
+    display: block;
   }
 }
 
@@ -218,16 +317,16 @@
     padding-left: var(--spacing-8);
     padding-right: var(--spacing-8);
   }
-  
+
   .valuesGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  
+
   .missionCard {
-    padding: var(--spacing-12);
+    padding: var(--spacing-20);
   }
-  
+
   .techSection {
-    padding: var(--spacing-12);
+    padding: var(--spacing-16);
   }
 }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Upload, Hash, Clock, Shield, Wallet } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Upload, Hash, Clock, Shield, Wallet, AlertTriangle } from 'lucide-react';
 import { useWallet } from '../contexts/WalletContext';
 import ideaRegistrationService from '../services/ideaRegistrationService.js';
 import styles from './Register.module.css';
@@ -18,6 +18,42 @@ const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationResult, setRegistrationResult] = useState(null);
   const [hash, setHash] = useState(null);
+  const [similarIdeas, setSimilarIdeas] = useState([]);
+  const [checkingDuplicates, setCheckingDuplicates] = useState(false);
+
+  // Real-time duplicate detection
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if ((formData.title.length > 2 || formData.description.length > 5) && servicesReady) {
+        setCheckingDuplicates(true);
+        try {
+          // Fetch existing ideas to check against
+          const existingIdeas = await ideaRegistrationService.getPublicIdeas(0, 50);
+
+          const titleLower = formData.title.toLowerCase();
+          const descLower = formData.description.toLowerCase();
+
+          const matches = existingIdeas.filter(idea => {
+            if (!idea.title) return false;
+            const existingTitle = idea.title.toLowerCase();
+            // detailed check could go here, for now simple substring
+            return (titleLower && existingTitle.includes(titleLower)) ||
+              (existingTitle && existingTitle.includes(titleLower));
+          });
+
+          setSimilarIdeas(matches);
+        } catch (error) {
+          console.error("Duplicate check error:", error);
+        } finally {
+          setCheckingDuplicates(false);
+        }
+      } else {
+        setSimilarIdeas([]);
+      }
+    }, 800); // 800ms debounce
+
+    return () => clearTimeout(timer);
+  }, [formData.title, formData.description, servicesReady]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -97,7 +133,7 @@ const Register = () => {
       // Register idea using the integrated service
       const result = await ideaRegistrationService.registerIdea(ideaData, formData.files);
 
-      setRegistrationResult(true);
+      setRegistrationResult(result);
       console.log('Result : ', result);
 
       const visibilityMessage = formData.visibility === 'private'
@@ -231,6 +267,27 @@ const Register = () => {
                 />
               </div>
 
+{/* Similar Ideas Warning */}
+              {similarIdeas.length > 0 && (
+                <div className={styles.warningContainer} style={{ marginBottom: '20px', padding: '15px', backgroundColor: 'rgba(255, 165, 0, 0.15)', borderRadius: '12px', border: '1px solid rgba(255, 165, 0, 0.3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', color: '#ffbd2e' }}>
+                    <AlertTriangle size={20} style={{ marginRight: '10px' }} />
+                    <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Similar Ideas Found</h3>
+                  </div>
+                  <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#ccc' }}>
+                    We found similar entries in the registry. Your idea might not be unique:
+                  </p>
+                  <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem' }}>
+                    {similarIdeas.slice(0, 3).map((idea, idx) => (
+                      <li key={idx} style={{ marginBottom: '5px', color: '#fff' }}>
+                        <strong>{idea.title}</strong>
+                      </li>
+                    ))}
+                  </ul>
+                  {similarIdeas.length > 3 && <p style={{ fontSize: '0.8rem', marginTop: '5px', color: '#888' }}>...and {similarIdeas.length - 3} more</p>}
+                </div>
+              )}
+
               {/* Description */}
               <div className={styles.formGroup}>
                 <label htmlFor="description" className={styles.formLabel}>
@@ -325,7 +382,7 @@ const Register = () => {
                   Supporting Documents (Optional)
                 </label>
                 <div className={styles.fileUpload}>
-                  <Upload style={{ margin: '0 auto', color: 'var(--color-gray-400)', marginBottom: '1rem' }} size={48} />
+                  <Upload className={styles.infoCardIcon} size={48} />
                   <input
                     type="file"
                     id="file"
@@ -360,6 +417,14 @@ const Register = () => {
                 </button>
               </div>
 
+              {/* Hash Display */}
+              {hash && (
+                <div className={styles.hashDisplay}>
+                  <h3 className={styles.hashTitle}>Generated Cryptographic Hash</h3>
+                  <p className={styles.hashValue}>{hash}</p>
+                </div>
+              )}
+
               {/* Registration Result Display */}
               {registrationResult && (
                 <div className={styles.resultDisplay}>
@@ -371,17 +436,19 @@ const Register = () => {
                         {registrationResult.transactionHash.substring(0, 10)}...
                       </a>
                     </p>
-                    <p><strong>IPFS Hash:</strong> {hash.substring(0, 10)}...</p>
+                    <p><strong>IPFS Hash:</strong> {registrationResult.metadataHash.substring(0, 10)}...</p>
                   </div>
                 </div>
               )}
+
+              
 
               {/* Submit Button */}
               <div className={styles.submitContainer}>
                 <button
                   type="submit"
-                // disabled={isSubmitting || !account || !servicesReady}
-                // className={`${styles.btnSuccess} ${(isSubmitting || !account || !servicesReady) ? styles.btnDisabled : ''}`}
+                  disabled={isSubmitting || !account || !servicesReady}
+                  className={`${styles.btnSuccess || 'btn-success'} ${(isSubmitting || !account || !servicesReady) ? (styles.btnDisabled || 'btn-disabled') : ''}`}
                 >
                   {isSubmitting ? (
                     <>
@@ -390,7 +457,7 @@ const Register = () => {
                     </>
                   ) : (
                     <>
-                      {/* <Shield size={20} /> */}
+                      <Shield size={20} />
                       <span>Register on Blockchain</span>
                     </>
                   )}
@@ -405,17 +472,17 @@ const Register = () => {
       <div className={styles.content}>
         <div className={styles.infoCards}>
           <div className={styles.infoCard}>
-            <Hash className={styles.infoCardIcon} style={{ color: 'var(--color-purple-400)' }} size={32} />
+            <Hash className={styles.infoCardIcon} size={32} />
             <h3 className={styles.infoCardTitle}>Cryptographic Hash</h3>
             <p className={styles.infoCardDescription}>Your idea is converted to a unique hash</p>
           </div>
           <div className={styles.infoCard}>
-            <Clock className={styles.infoCardIcon} style={{ color: 'var(--color-blue-400)' }} size={32} />
+            <Clock className={styles.infoCardIcon} size={32} />
             <h3 className={styles.infoCardTitle}>Blockchain Timestamp</h3>
             <p className={styles.infoCardDescription}>Immutable proof of when you registered</p>
           </div>
           <div className={styles.infoCard}>
-            <Shield className={styles.infoCardIcon} style={{ color: 'var(--color-green-400)' }} size={32} />
+            <Shield className={styles.infoCardIcon} size={32} />
             <h3 className={styles.infoCardTitle}>Privacy Protected</h3>
             <p className={styles.infoCardDescription}>Your content remains completely private</p>
           </div>

@@ -88,6 +88,11 @@ const Header = () => {
               <Link to="/about" className={styles.navLink}>
                 About
               </Link>
+              {account && (
+                <Link to="/my-ideas" className={styles.navLink}>
+                  My Ideas
+                </Link>
+              )}
             </nav>
 
             {/* Wallet Section */}
@@ -126,8 +131,8 @@ const Header = () => {
                         <Wallet size={16} />
                       </div>
                       <div className={`${styles.networkIndicator} ${chainId === 1 ? styles.mainnet :
-                          chainId === 137 ? styles.polygon :
-                            styles.testnet
+                        chainId === 137 ? styles.polygon :
+                          styles.testnet
                         }`}></div>
                     </div>
                     <div className={styles.walletDetails}>
@@ -135,7 +140,7 @@ const Header = () => {
                         {`${account.slice(0, 6)}...${account.slice(-4)}`}
                       </span>
                       <span className={styles.walletBalance}>
-                        {balance ? `${balance} ETH` : '0.0000 ETH'}
+                        {balance ? `${balance} ${chainId === 80001 || chainId === 80002 || chainId === 137 ? 'MATIC' : 'ETH'}` : '0.0000 ETH'}
                       </span>
                     </div>
                     <ChevronDown
@@ -198,7 +203,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </header>
+      </header >
     </>
   );
 };

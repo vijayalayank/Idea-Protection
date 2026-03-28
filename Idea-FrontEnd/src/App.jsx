@@ -7,6 +7,7 @@ import Features from './pages/Features';
 import Registry from './pages/Registry';
 import About from './pages/About';
 import Register from './pages/Register';
+import MyIdeas from './pages/MyIdeas';
 import styles from './App.module.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path="/registry" element={<Registry />} />
               <Route path="/about" element={<About />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/my-ideas" element={<MyIdeas />} />
             </Routes>
           </main>
           <Footer />

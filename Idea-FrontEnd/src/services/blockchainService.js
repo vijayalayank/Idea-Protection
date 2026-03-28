@@ -6,8 +6,14 @@ class BlockchainService {
     this.provider = null;
     this.contract = null;
     this.signer = null;
+    this.chainId = parseInt(import.meta.env.VITE_CHAIN_ID || '80001'); // Default to Amoy/Mumbai
+
+    // Get contract address from env or from ABI networks
     this.contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
-    this.chainId = parseInt(import.meta.env.VITE_CHAIN_ID || '80001');
+    if (!this.contractAddress && IdeaRegistryABI.networks && IdeaRegistryABI.networks[this.chainId]) {
+      this.contractAddress = IdeaRegistryABI.networks[this.chainId].address;
+    }
+
     this.isContractDeployed = false;
   }
 
@@ -93,12 +99,47 @@ class BlockchainService {
       // Add 20% buffer to gas estimate
       const gasLimit = gasEstimate * 120n / 100n;
 
+      // Amoy network typically requires higher gas fees
+      // Minimum tip cap is usually around 25 Gwei (25000000000 wei)
+      const MIN_PRIORITY_FEE = 25000000000n; // 25 Gwei
+
+      let feeData;
+      try {
+        feeData = await this.provider.getFeeData();
+      } catch (e) {
+        console.warn('Could not fetch fee data, using defaults');
+      }
+
+      // Calculate safe fees
+      // Use the higher of network suggestion or our minimum
+      const maxPriorityFeePerGas = feeData?.maxPriorityFeePerGas && feeData.maxPriorityFeePerGas > MIN_PRIORITY_FEE
+        ? feeData.maxPriorityFeePerGas
+        : MIN_PRIORITY_FEE;
+
+      // Ensure maxFee is at least priority fee + base fee (we add a buffer to base fee)
+      let maxFeePerGas;
+      if (feeData?.maxFeePerGas) {
+        // Use network suggestion if it's safe (higher than our calc priority fee)
+        maxFeePerGas = feeData.maxFeePerGas < maxPriorityFeePerGas
+          ? maxPriorityFeePerGas + 1000000000n // +1 Gwei if network max is weirdly low
+          : feeData.maxFeePerGas;
+      } else {
+        // Only use fixed buffer if we can't get network data
+        maxFeePerGas = maxPriorityFeePerGas + 5000000000n; // 5 Gwei buffer
+      }
+
+      console.log(`⛽ Using fees - Priority: ${ethers.formatUnits(maxPriorityFeePerGas, 'gwei')} Gwei, Max: ${ethers.formatUnits(maxFeePerGas, 'gwei')} Gwei`);
+
       // Execute transaction
       const tx = await this.contract.registerIdea(
         metadataHash,
         isPrivate,
         accessHash,
-        { gasLimit }
+        {
+          gasLimit,
+          maxPriorityFeePerGas,
+          maxFeePerGas
+        }
       );
 
       console.log('⏳ Transaction submitted:', tx.hash);

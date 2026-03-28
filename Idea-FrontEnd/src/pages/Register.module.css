@@ -3,12 +3,15 @@
 .container {
   min-height: 100vh;
   padding-top: var(--spacing-20);
+  background-image: radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
 }
 
 .content {
   max-width: 64rem;
   margin: 0 auto;
   padding: var(--spacing-16) var(--spacing-4);
+  position: relative;
+  z-index: 10;
 }
 
 .header {
@@ -21,13 +24,30 @@
   font-weight: 700;
   color: var(--color-white);
   margin-bottom: var(--spacing-6);
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
 .gradientText {
-  background: linear-gradient(135deg, var(--color-purple-400), var(--color-blue-400));
+  background: linear-gradient(135deg, var(--color-accent-400), var(--color-secondary-400), var(--color-primary-400));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradientForwards 5s linear infinite;
+}
+
+@keyframes gradientForwards {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .description {
@@ -35,14 +55,34 @@
   color: var(--color-gray-300);
   max-width: 48rem;
   margin: 0 auto;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out 0.2s forwards;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .formContainer {
-  background: rgba(31, 41, 55, 0.5);
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--color-gray-700);
-  border-radius: 1rem;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* glass-panel */
+  border-radius: var(--radius-xl);
   padding: var(--spacing-8);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.4s forwards;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .form {
@@ -67,43 +107,47 @@
 .formInput {
   width: 100%;
   padding: var(--spacing-3) var(--spacing-4);
-  background: var(--color-gray-700);
+  background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--color-gray-600);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   color: var(--color-white);
   font-size: var(--text-base);
-  transition: border-color 200ms;
+  transition: all 200ms;
 }
 
 .formInput::placeholder {
-  color: var(--color-gray-400);
+  color: var(--color-gray-500);
 }
 
 .formInput:focus {
   outline: none;
-  border-color: var(--color-purple-500);
+  border-color: var(--color-primary-500);
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 .formTextarea {
   width: 100%;
   padding: var(--spacing-3) var(--spacing-4);
-  background: var(--color-gray-700);
+  background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--color-gray-600);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   color: var(--color-white);
   font-size: var(--text-base);
-  resize: none;
-  transition: border-color 200ms;
+  resize: vertical;
+  transition: all 200ms;
   min-height: 150px;
 }
 
 .formTextarea::placeholder {
-  color: var(--color-gray-400);
+  color: var(--color-gray-500);
 }
 
 .formTextarea:focus {
   outline: none;
-  border-color: var(--color-purple-500);
+  border-color: var(--color-primary-500);
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 /* Radio Group Styles */
@@ -128,48 +172,49 @@
   align-items: flex-start;
   gap: var(--spacing-3);
   padding: var(--spacing-4);
-  border: 2px solid var(--color-gray-700);
-  border-radius: var(--border-radius-lg);
-  background: var(--color-gray-800);
+  border: 1px solid var(--color-gray-700);
+  border-radius: var(--radius-lg);
+  background: rgba(30, 41, 59, 0.4);
   cursor: pointer;
   transition: all 200ms;
 }
 
 .radioLabel:hover {
-  border-color: var(--color-gray-600);
-  background: var(--color-gray-750);
+  border-color: var(--color-gray-500);
+  background: rgba(30, 41, 59, 0.6);
 }
 
-.radioInput:checked + .radioLabel {
-  border-color: var(--color-purple-500);
-  background: rgba(139, 92, 246, 0.1);
+.radioInput:checked+.radioLabel {
+  border-color: var(--color-primary-500);
+  background: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 1px var(--color-primary-500);
 }
 
 .radioButton {
   width: 1.25rem;
   height: 1.25rem;
-  border: 2px solid var(--color-gray-600);
+  border: 2px solid var(--color-gray-500);
   border-radius: 50%;
-  background: var(--color-gray-800);
+  background: transparent;
   position: relative;
   flex-shrink: 0;
   margin-top: 0.125rem;
   transition: all 200ms;
 }
 
-.radioInput:checked + .radioLabel .radioButton {
-  border-color: var(--color-purple-500);
-  background: var(--color-purple-500);
+.radioInput:checked+.radioLabel .radioButton {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-500);
 }
 
-.radioInput:checked + .radioLabel .radioButton::after {
+.radioInput:checked+.radioLabel .radioButton::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 0.375rem;
-  height: 0.375rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
   background: white;
 }
@@ -202,14 +247,18 @@
 
 /* Wallet Prompt Styles */
 .walletPrompt {
-  background: linear-gradient(135deg, var(--color-gray-800), var(--color-gray-750));
-  border: 2px solid var(--color-purple-500);
-  border-radius: var(--border-radius-xl);
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-primary-500);
+  border-radius: var(--radius-xl);
   padding: var(--spacing-12);
   margin-bottom: var(--spacing-8);
   text-align: center;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.3);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.4s forwards;
 }
 
 .walletPrompt::before {
@@ -219,7 +268,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1), transparent 70%);
   pointer-events: none;
 }
 
@@ -233,8 +282,23 @@
 }
 
 .walletPromptIcon {
-  color: var(--color-purple-400);
-  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
+  color: var(--color-primary-400);
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .walletPromptTitle {
@@ -271,7 +335,7 @@
 }
 
 .promptFeature svg {
-  color: var(--color-purple-400);
+  color: var(--color-primary-400);
 }
 
 .walletPromptButton {
@@ -279,21 +343,21 @@
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-4) var(--spacing-8);
-  background: linear-gradient(135deg, var(--color-purple-500), var(--color-blue-500));
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
   border: none;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-full);
   color: var(--color-white);
   font-size: var(--text-lg);
   font-weight: 600;
   cursor: pointer;
   transition: all 200ms;
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
 }
 
 .walletPromptButton:hover {
-  background: linear-gradient(135deg, var(--color-purple-600), var(--color-blue-600));
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-secondary-600));
   transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5);
+  box-shadow: 0 12px 35px rgba(99, 102, 241, 0.5);
 }
 
 .walletPromptNote {
@@ -303,23 +367,24 @@
 }
 
 .walletPromptNote a {
-  color: var(--color-purple-400);
+  color: var(--color-primary-400);
   text-decoration: none;
   font-weight: 500;
 }
 
 .walletPromptNote a:hover {
-  color: var(--color-purple-300);
+  color: var(--color-primary-300);
   text-decoration: underline;
 }
 
 /* Wallet Connected Success */
 .walletConnected {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
-  border: 1px solid var(--color-green-500);
-  border-radius: var(--border-radius-lg);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-4);
   margin-bottom: var(--spacing-6);
+  backdrop-filter: blur(4px);
 }
 
 .walletConnectedContent {
@@ -331,13 +396,14 @@
 .walletConnectedIcon {
   width: 40px;
   height: 40px;
-  background: var(--color-green-500);
+  background: var(--color-success);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 
 .walletConnectedInfo {
@@ -345,7 +411,7 @@
 }
 
 .walletConnectedTitle {
-  color: var(--color-green-400);
+  color: var(--color-success);
   font-size: var(--text-base);
   font-weight: 600;
   margin: 0 0 var(--spacing-1) 0;
@@ -360,15 +426,15 @@
 
 /* Registration Result Display */
 .resultDisplay {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
-  border: 1px solid var(--color-green-500);
-  border-radius: var(--border-radius-lg);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-6);
   margin-bottom: var(--spacing-6);
 }
 
 .resultTitle {
-  color: var(--color-green-400);
+  color: var(--color-success);
   font-size: var(--text-lg);
   font-weight: 600;
   margin: 0 0 var(--spacing-4) 0;
@@ -388,26 +454,27 @@
 }
 
 .resultDetails a {
-  color: var(--color-purple-400);
+  color: var(--color-primary-400);
   text-decoration: none;
 }
 
 .resultDetails a:hover {
-  color: var(--color-purple-300);
   text-decoration: underline;
 }
 
 .fileUpload {
   border: 2px dashed var(--color-gray-600);
-  border-radius: 0.5rem;
-  padding: var(--spacing-6);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-8);
   text-align: center;
-  transition: border-color 200ms;
+  transition: all 200ms;
   cursor: pointer;
+  background: rgba(30, 41, 59, 0.4);
 }
 
 .fileUpload:hover {
-  border-color: var(--color-purple-500);
+  border-color: var(--color-primary-500);
+  background: rgba(30, 41, 59, 0.6);
 }
 
 .fileUploadInput {
@@ -419,11 +486,8 @@
 }
 
 .fileUploadText {
-  color: var(--color-purple-400);
-}
-
-.fileUploadText:hover {
-  color: var(--color-purple-300);
+  color: var(--color-primary-400);
+  font-weight: 500;
 }
 
 .fileUploadSubtext {
@@ -437,8 +501,9 @@
 }
 
 .fileSelected {
-  color: var(--color-green-400);
+  color: var(--color-success);
   margin-top: var(--spacing-2);
+  font-weight: 500;
 }
 
 .buttonContainer {
@@ -447,10 +512,10 @@
 }
 
 .btnPrimary {
-  background: linear-gradient(135deg, var(--color-purple-600), var(--color-blue-600));
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-secondary-600));
   color: var(--color-white);
-  padding: var(--spacing-3) var(--spacing-6);
-  border-radius: 0.5rem;
+  padding: var(--spacing-3) var(--spacing-8);
+  border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
   font-weight: 600;
@@ -458,17 +523,20 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
 }
 
 .btnPrimary:hover {
-  background: linear-gradient(135deg, var(--color-purple-700), var(--color-blue-700));
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
 }
 
 .btnSuccess {
-  background: linear-gradient(135deg, var(--color-green-600), var(--color-blue-600));
+  background: linear-gradient(135deg, var(--color-success), var(--color-accent-500));
   color: var(--color-white);
   padding: var(--spacing-4) var(--spacing-8);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
   font-size: var(--text-lg);
@@ -477,36 +545,46 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
+  width: 100%;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
 }
 
 .btnSuccess:hover {
-  background: linear-gradient(135deg, var(--color-green-700), var(--color-blue-700));
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
 }
 
 .btnDisabled {
-  background: linear-gradient(135deg, var(--color-gray-600), var(--color-gray-700));
+  background: var(--color-gray-700);
   cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
 }
 
 .btnDisabled:hover {
-  background: linear-gradient(135deg, var(--color-gray-600), var(--color-gray-700));
+  background: var(--color-gray-700);
+  transform: none;
 }
 
 .hashDisplay {
-  background: var(--color-gray-700);
-  border-radius: 0.5rem;
+  background: var(--color-gray-800);
+  border-radius: var(--radius-md);
   padding: var(--spacing-4);
+  border: 1px solid var(--color-gray-700);
 }
 
 .hashTitle {
   color: var(--color-white);
   font-weight: 600;
   margin-bottom: var(--spacing-2);
+  font-size: var(--text-sm);
 }
 
 .hashValue {
-  color: var(--color-purple-400);
-  font-family: 'Courier New', monospace;
+  color: var(--color-accent-400);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
   font-size: var(--text-sm);
   word-break: break-all;
 }
@@ -527,25 +605,42 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .infoCards {
   display: grid;
   gap: var(--spacing-6);
   margin-top: var(--spacing-12);
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out 0.6s forwards;
 }
 
 .infoCard {
-  background: rgba(31, 41, 55, 0.3);
-  border-radius: 0.5rem;
-  padding: var(--spacing-6);
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-8);
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 300ms;
+}
+
+.infoCard:hover {
+  transform: translateY(-5px);
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .infoCardIcon {
   margin: 0 auto var(--spacing-3);
+  color: var(--color-primary-400);
 }
 
 .infoCardTitle {
@@ -595,7 +690,7 @@
   .title {
     font-size: var(--text-6xl);
   }
-  
+
   .infoCards {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }

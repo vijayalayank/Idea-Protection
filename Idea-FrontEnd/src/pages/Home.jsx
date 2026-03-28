@@ -46,7 +46,7 @@ const Home = () => {
             {/* Cryptographic Hash */}
             <div className={styles.featureCard}>
               <div className={`${styles.featureIcon} ${styles.featureIconPurple}`}>
-                <Hash style={{color: 'white'}} size={32} />
+                <Hash size={32} />
               </div>
               <h3 className={styles.featureTitle}>Cryptographic Hash</h3>
               <p className={styles.featureDescription}>
@@ -57,7 +57,7 @@ const Home = () => {
             {/* Immutable Timestamp */}
             <div className={styles.featureCard}>
               <div className={`${styles.featureIcon} ${styles.featureIconBlue}`}>
-                <Clock style={{color: 'white'}} size={32} />
+                <Clock size={32} />
               </div>
               <h3 className={styles.featureTitle}>Immutable Timestamp</h3>
               <p className={styles.featureDescription}>
@@ -68,7 +68,7 @@ const Home = () => {
             {/* Secure & Private */}
             <div className={styles.featureCard}>
               <div className={`${styles.featureIcon} ${styles.featureIconGreen}`}>
-                <Shield style={{color: 'white'}} size={32} />
+                <Shield size={32} />
               </div>
               <h3 className={styles.featureTitle}>Secure & Private</h3>
               <p className={styles.featureDescription}>

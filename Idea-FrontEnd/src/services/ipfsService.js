@@ -174,7 +174,7 @@ class IPFSService {
 
   // Upload complete idea data
   async uploadCompleteIdeaData(ideaData) {
-    const contentHash = this.generateContentHash(ideaData);
+    const contentHash = await this.generateContentHash(ideaData);
 
     const completeIdeaData = {
       // Basic info
@@ -213,7 +213,7 @@ class IPFSService {
         ideaTitle: ideaData.title,
         contentHash,
         owner: ideaData.ownerAddress,
-        isPrivate: ideaData.isPrivate || false,
+        isPrivate: (ideaData.isPrivate || false).toString(),
         version: '2.0'
       }
     };
@@ -236,7 +236,7 @@ class IPFSService {
       name: `private-access-${Date.now()}`,
       keyvalues: {
         type: 'private-access-data',
-        encrypted: true
+        encrypted: 'true'
       }
     };
 
